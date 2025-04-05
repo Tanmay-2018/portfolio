@@ -1,0 +1,175 @@
+*<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- ///BOOTSTRAP 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+
+    #newContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 30px;
+    list-style: none;
+    } 
+    #secondContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 30px;
+    list-style: none;
+    } 
+    .card{
+      min-height: 500px !important; 
+
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+      <h1 class="text-center ">Dynamic News Feed</h1>
+        <div class="container">
+            <h3>Add New News Article</h3>
+            <form onsubmit="AddArticle(event)" id="form">
+                <div class="form-group">
+                    <label for="title">ADD Title</label>
+                    <input type="text" placeholder="Title Of The Article" id="title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea name="" id="description" class="form-control" rows="6" placeholder="Description of the Article"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="img">Image URL</label>
+                    <input type="text" placeholder="Add Image URL" class="form-control" id="imgURl">
+                </div><br>
+                <div class="form-group">
+                <input type="submit" value="ADD Article" class="form-control btn btn-success">
+                </div>
+            </form>
+        </div><br>
+        <div class="container"> 
+                <ul class="container" id="newContainer" >
+                <li>First container</li>
+                </ul>
+                <ul class="container" id="secondContainer">
+                    <li>Second Container</li>
+                </ul>
+        </div><br>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+              <li class="page-item"><a class="page-link" href="#newContainer" onclick="firstPage()">1</a></li>
+              <li class="page-item"><a class="page-link" href="#secondContainer" onclick="secondPage()">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </nav>
+    </div>
+    <script>
+var currentPage = 1
+        var newsContainer = document.getElementById("newContainer").style.display = "grid"         
+   document.getElementById("secondContainer").style.display="none"
+function firstPage(){
+    currentPage =1
+   document.getElementById("secondContainer").style.display="none"
+   document.getElementById("newContainer").style.display ="grid"            
+ loadNewsFeed()
+}
+function secondPage(){
+currentPage = 2
+    document.getElementById("secondContainer").style.display="grid"
+         document.getElementById("newContainer").style.display ="none"            
+    loadNewsFeed()
+}
+const NewsArticle = [
+    {
+        Title: "7 soldiers injured in landmine explosion",
+        Description: "The troops were on patrol duty when one of the soldiers accidentally stepped over the landmine near Khamba Fort in Nowshera sector.",
+        imgURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK6cuvFXjYYui065H_nEr981JkpwvqflO2dw&s"
+    },
+    {
+        Title: "Rain forecast in Mumbai disrupts flights",
+        Description: "Heavy rain is expected to disrupt flights and bring traffic to a standstill in the city this week.",
+        imgURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTEj63-B23Yx_nOElenRzuHWO8QXrrhPtmA&s"
+    },
+    {
+        Title: "Tech stocks surge in the stock market",
+        Description: "Market recovery boosts the tech industry, with major players reporting significant gains in their quarterly results.",
+        imgURL: "https://inc42.com/cdn-cgi/image/quality=75/https://asset.inc42.com/2024/06/Stock-gain-ft-760x570.png"
+    },
+    {
+        Title: "Sports events canceled due to heatwave",
+        Description: "A severe heatwave has forced authorities to cancel several outdoor sports events across the country.",
+        imgURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZiSlp1J6KDD2cM4Y8HoxlwfcLLVScMtHrNA&s"
+    },
+    {
+        Title: "Sonu Sood has ditched chapatis",
+        Description: "Sonu Sood has ditched chapatis, eats ‘hospital food at home’; know what happens to the body when you completely eliminate rotis from diet",
+        imgURL: "https://images.indianexpress.com/2025/01/sonu-sood-what-happens.jpg?w=640"
+    },
+    {
+        Title: "Kumbh Mela, explained: Its mythology, history, astrology, and why millions flock to it",
+        Description: "Maha Kumbh Mela Mythology, History, Astrology: What is the Kumbh Mela, and why is it held in four cities periodically? What is Ardh Kumbh and Maha Kumbh? What is the origin of this pilgrimage festival?",
+        imgURL: "https://images.indianexpress.com/2025/01/Internal-migration.jpg?w=640"
+    },
+    {
+        Title: "Internal migrants drive development but ‘better life’ remains elusive for them",
+        Description: "Internal migrants play a crucial role in improving the economy of their home areas and driving development. However, only a few manage to improve their own lives after moving to urban areas. Why?",
+        imgURL: "https://images.indianexpress.com/2025/01/Internal-migration.jpg?w=640"
+    },
+    {
+        Title: "Gloves off between Rahul Gandhi, Arvind Kejriwal, where does INDIA go from here",
+        Description: "That there is no love lost between Arvind Kejriwal and Rahul Gandhi is well-known. Kejriwal’s Aam Aadmi Party (AAP) is the only regional outfit to have ousted the Congress from power in two states (Delhi and Punjab) in recent history. Besides, Rahul, like most Congress leaders, believes it was the Anna Hazare movement, of which Kejriwal was a part, that triggered the party’s nationwide collapse over a decade ago.",
+        imgURL: "https://images.indianexpress.com/2025/01/rahul-kejri-1.jpg?w=640"
+    },
+    {
+        Title: "Amid farmers’ stir, Shivraj Singh Chouhan goes the extra mile, reaches out to states",
+        Description: "As farmers’ protests persist over several demands including a legal guarantee for minimum support price (MSP), the Union Ministry of Agriculture and Farmers’ Welfare, led by Shivraj Singh Chouhan, has taken one more step to enhance coordination between the Centre and states.",
+        imgURL: "https://images.indianexpress.com/2025/01/shivraj-farmers-pulse.jpg?w=640"
+    }
+];
+  
+       
+    function loadNewsFeed() {
+  
+            const container = currentPage === 1 ? document.getElementById("newContainer") : document.getElementById("secondContainer");
+            container.innerHTML = "";
+
+            const startIndex = (currentPage - 1) * 6;
+            const endIndex = startIndex + 6;
+            const pageArticles = NewsArticle.slice(startIndex, endIndex);
+
+            pageArticles.forEach((article) => {
+                const newsItem = `
+                    <li>
+                        <div class="card" style="width:350px; min-height:450px;">
+                            <img class="card-img-top" src="${article.imgURL}" alt="Card image" style="width:100%">
+                            <div class="card-body">
+                              <h4 class="card-title">${article.Title}</h4>
+                              <p class="card-text">${article.Description}</p>
+                            </div>
+                        </div>
+                    </li>`;
+                container.innerHTML += newsItem;
+            });
+        }
+
+    var AddArticle = (event)=>{
+            event.preventDefault()
+            var Title = document.getElementById("title").value
+            var Description = document.getElementById("description").value
+            var imgURL = document.getElementById("imgURl").value
+            var obj  = {Title,Description,imgURL} 
+            NewsArticle.push(obj);
+            document.querySelector("form").reset()
+            loadNewsFeed()
+        }
+        window.onload = firstPage
+    </script>
+</body>
+</html>*

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .recipe-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+        .recipe-card:hover {
+            transform: scale(1.05);
+        }
+        .recipe-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .recipe-card .content {
+            padding: 15px;
+        }
+        .recipe-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.25rem;
+        }
+        .recipe-card p {
+            margin: 0;
+            color: #6c757d;
+        }
+        .search-bar {
+            display: flex;
+            gap: 10px;
+        }
+        .search-bar input, .search-bar select {
+            flex: 1;
+        }
+        .no-results {
+            text-align: center;
+            color: #6c757d;
+            font-size: 1.25rem;
+            margin-top: 20px;
+        }
+        .add-recipe {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Recipe Finder</h1>
+        <div class="search-bar mb-4">
+            <input type="text" id="searchInput" class="form-control" placeholder="Type ingredients...">
+            <select id="typeFilter" class="form-select">
+                <option value="">All Types</option>
+                <option value="Breakfast">Breakfast</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
+                <option value="Snack">Snack</option>
+                <option value="Dessert">Dessert</option>
+            </select>
+            <button class="btn btn-primary" onclick="searchRecipes()">Search</button>
+        </div>
+        <div class="row" id="recipeContainer"></div>
+
+        <div class="add-recipe">
+            <h2>Add a New Recipe</h2>
+            <form id="addRecipeForm">
+                <div class="mb-3">
+                    <label for="recipeName" class="form-label">Recipe Name</label>
+                    <input type="text" id="recipeName" class="form-control" placeholder="Enter recipe name">
+                </div>
+                <div class="mb-3">
+                    <label for="recipeType" class="form-label">Recipe Type</label>
+                    <select id="recipeType" class="form-select">
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Lunch">Lunch</option>
+                        <option value="Dinner">Dinner</option>
+                        <option value="Snack">Snack</option>
+                        <option value="Dessert">Dessert</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="recipeIngredients" class="form-label">Ingredients</label>
+                    <input type="text" id="recipeIngredients" class="form-control" placeholder="Enter ingredients, separated by commas">
+                </div>
+                <div class="mb-3">
+                    <label for="recipeImage" class="form-label">Upload Image</label>
+                    <input type="file" id="recipeImage" class="form-control">
+                </div>
+                <button type="button" class="btn btn-success" onclick="addRecipe()">Add Recipe</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const recipes = [];
+
+        function searchRecipes() {
+            const searchInput = document.getElementById("searchInput").value.toLowerCase();
+            const typeFilter = document.getElementById("typeFilter").value;
+            const recipeContainer = document.getElementById("recipeContainer");
+
+            const filteredRecipes = recipes.filter(recipe => {
+                const matchesIngredients = recipe.ingredients.some(ingredient =>
+                    ingredient.toLowerCase().includes(searchInput)
+                );
+                const matchesType = typeFilter ? recipe.type === typeFilter : true;
+                return matchesIngredients && matchesType;
+            });
+
+            recipeContainer.innerHTML = filteredRecipes.map(recipe => `
+                <div class="col-md-4">
+                    <div class="recipe-card">
+                        <img src="${recipe.image}" alt="${recipe.name}" class="img-fluid">
+                        <div class="content">
+                            <h3>${recipe.name}</h3>
+                            <p>Type: ${recipe.type}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join("");
+
+            if (filteredRecipes.length === 0) {
+                recipeContainer.innerHTML = "<p class='no-results'>No recipes found. Try different ingredients or meal types!</p>";
+            }
+        }
+
+        function addRecipe() {
+            const name = document.getElementById("recipeName").value;
+            const type = document.getElementById("recipeType").value;
+            const ingredients = document.getElementById("recipeIngredients").value.split(",").map(ing => ing.trim());
+            const imageInput = document.getElementById("recipeImage");
+            const image = imageInput.files[0] ? URL.createObjectURL(imageInput.files[0]) : "https://via.placeholder.com/300?text=No+Image";
+
+            if (!name || !type || ingredients.length === 0) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            recipes.push({ name, type, ingredients, image });
+            alert("Recipe added successfully!");
+            document.getElementById("addRecipeForm").reset();
+            searchRecipes();
+        }
+        </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
